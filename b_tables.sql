@@ -91,7 +91,7 @@ CREATE TABLE b_shops (
 create sequence b_shops_seq start with 1 increment by 1 nocache order;
 
 CREATE TABLE b_stocks_log (
-  log_id               NUMBER NOT NULL,
+  log_id                        NUMBER NOT NULL,
   stock_id                      NUMBER NOT NULL, -- sequence
   car_id                        NUMBER NOT NULL, -- from n_cars
   dealer_type                   VARCHAR2(2) NOT NULL,   -- 取扱系列: N,P,NP
