@@ -58,7 +58,8 @@ CREATE TABLE b_users (
   created_by                    VARCHAR2(100) DEFAULT 'admin',
   updated                       DATE DEFAULT CURRENT_DATE,
   updated_by                    VARCHAR2(100) DEFAULT 'admin',
-  CONSTRAINT b_users_pk PRIMARY KEY (user_id) ENABLE
+  CONSTRAINT b_users_pk PRIMARY KEY (user_id) ENABLE,
+  CONSTRAINT b_users_fk FOREIGN KEY (shop_id) REFERENCES b_shops (shop_id) ENABLE
 );
 
 CREATE TABLE b_dealers (
@@ -86,7 +87,8 @@ CREATE TABLE b_shops (
   created_by                    VARCHAR2(100) DEFAULT 'admin',
   updated                       DATE DEFAULT CURRENT_DATE,
   updated_by                    VARCHAR2(100) DEFAULT 'admin',
-  CONSTRAINT b_shops_pk PRIMARY KEY (shop_id) ENABLE
+  CONSTRAINT b_shops_pk PRIMARY KEY (shop_id) ENABLE,
+  CONSTRAINT b_shops_fk FOREIGN KEY (dealer_id) REFERENCES b_dealers (dealer_id) ENABLE
 );
 create sequence b_shops_seq start with 1 increment by 1 nocache order;
 
@@ -138,3 +140,25 @@ CREATE TABLE b_codes (
 create index b_codes_idx01 on b_codes(tag,name,vn,vc);
 create sequence b_codes_seq start with 1 increment by 1 nocache order;
 
+CREATE TABLE b_users_temp (
+  dealer_name                   VARCHAR2(200),
+  dealer_cd                     VARCHAR2(2),
+  shop_name                     VARCHAR2(200),
+  shop_cd                       VARCHAR2(3),
+  user_id                       VARCHAR2(8),
+  user_name                     VARCHAR2(100),
+  email_address                 VARCHAR2(100),
+  update_flg                    VARCHAR2(100) -- 「追加」「削除」の文字をいれてもらう 
+);
+
+CREATE TABLE b_dealers_temp (
+  dealer_cd                     VARCHAR2(2) NOT NULL,
+  dealer_name                   VARCHAR2(200) NOT NULL
+);
+
+CREATE TABLE b_shops_temp (
+  dealer_cd                     VARCHAR2(2) NOT NULL,
+  dealer_name                   VARCHAR2(200) NOT NULL,
+  shop_cd                       VARCHAR2(3) NOT NULL,
+  shop_name                     VARCHAR2(200) NOT NULL
+);

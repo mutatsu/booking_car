@@ -74,7 +74,7 @@ AS
       RAISE;
   END check_password;
   -- -----------------------------------------------
-    FUNCTION check_password_life_time(
+  FUNCTION check_password_life_time(
     p_username IN VARCHAR2,
     date_in    IN DATE DEFAULT CURRENT_DATE
   ) RETURN BOOLEAN

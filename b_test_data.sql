@@ -1,31 +1,31 @@
 -- b_dealers
-insert into b_dealers (dealer_id, dealer_cd, dealer_name, display_num) values(b_dealers_seq.nextval,'01','京都トヨペット',1);
-insert into b_dealers (dealer_id, dealer_cd, dealer_name, display_num) values(b_dealers_seq.nextval,'02','ネッツトヨタ京華',2);
+insert into b_dealers (dealer_id, dealer_cd, dealer_name, display_num) values(b_dealers_seq.nextval,'P','京都トヨペット',1);
+insert into b_dealers (dealer_id, dealer_cd, dealer_name, display_num) values(b_dealers_seq.nextval,'N','ネッツトヨタ京華',2);
 
 -- b_shops
-insert into b_shops (shop_id,dealer_id,shop_cd,shop_name)values(b_shops_seq.nextval,1,'01','P本部');
-insert into b_shops (shop_id,dealer_id,shop_cd,shop_name)values(b_shops_seq.nextval,2,'02','N本部');
+insert into b_shops (shop_id,dealer_id,shop_cd,shop_name,display_num)values(b_shops_seq.nextval,1,'01','P本部',99);
+insert into b_shops (shop_id,dealer_id,shop_cd,shop_name,display_num)values(b_shops_seq.nextval,2,'02','N本部',99);
 
-insert into b_shops (shop_id,dealer_id,shop_cd,shop_name)values(b_shops_seq.nextval,1,'xx','七条本店');
-insert into b_shops (shop_id,dealer_id,shop_cd,shop_name)values(b_shops_seq.nextval,1,'xx','北店');
-insert into b_shops (shop_id,dealer_id,shop_cd,shop_name)values(b_shops_seq.nextval,1,'xx','岡崎店');
-insert into b_shops (shop_id,dealer_id,shop_cd,shop_name)values(b_shops_seq.nextval,1,'xx','カドノ店');
-insert into b_shops (shop_id,dealer_id,shop_cd,shop_name)values(b_shops_seq.nextval,1,'xx','桂店');
-insert into b_shops (shop_id,dealer_id,shop_cd,shop_name)values(b_shops_seq.nextval,1,'xx','山科店');
-insert into b_shops (shop_id,dealer_id,shop_cd,shop_name)values(b_shops_seq.nextval,1,'xx','伏見店');
-insert into b_shops (shop_id,dealer_id,shop_cd,shop_name)values(b_shops_seq.nextval,1,'xx','桃山店');
-insert into b_shops (shop_id,dealer_id,shop_cd,shop_name)values(b_shops_seq.nextval,1,'xx','U-mix');
-insert into b_shops (shop_id,dealer_id,shop_cd,shop_name)values(b_shops_seq.nextval,1,'xx','Custom Garage');
-insert into b_shops (shop_id,dealer_id,shop_cd,shop_name)values(b_shops_seq.nextval,1,'xx','亀岡店');
-insert into b_shops (shop_id,dealer_id,shop_cd,shop_name)values(b_shops_seq.nextval,1,'xx','舞鶴店');
-insert into b_shops (shop_id,dealer_id,shop_cd,shop_name)values(b_shops_seq.nextval,1,'xx','峰山店');
-insert into b_shops (shop_id,dealer_id,shop_cd,shop_name)values(b_shops_seq.nextval,1,'xx','福知山店');
-insert into b_shops (shop_id,dealer_id,shop_cd,shop_name)values(b_shops_seq.nextval,1,'xx','マイカーガーデン');
-insert into b_shops (shop_id,dealer_id,shop_cd,shop_name)values(b_shops_seq.nextval,1,'xx','乙訓店');
-insert into b_shops (shop_id,dealer_id,shop_cd,shop_name)values(b_shops_seq.nextval,1,'xx','城陽店');
-insert into b_shops (shop_id,dealer_id,shop_cd,shop_name)values(b_shops_seq.nextval,1,'xx','久御山店');
-insert into b_shops (shop_id,dealer_id,shop_cd,shop_name)values(b_shops_seq.nextval,1,'xx','木津川台店');
-insert into b_shops (shop_id,dealer_id,shop_cd,shop_name)values(b_shops_seq.nextval,1,'xx','レクサス西大路');
+insert into b_shops (shop_id,dealer_id,shop_cd,shop_name,display_num)values(b_shops_seq.nextval,1,'10','七条本店',1);
+insert into b_shops (shop_id,dealer_id,shop_cd,shop_name,display_num)values(b_shops_seq.nextval,1,'11','北店',2);
+insert into b_shops (shop_id,dealer_id,shop_cd,shop_name,display_num)values(b_shops_seq.nextval,1,'12','岡崎店',3);
+insert into b_shops (shop_id,dealer_id,shop_cd,shop_name,display_num)values(b_shops_seq.nextval,1,'13','カドノ店',4);
+insert into b_shops (shop_id,dealer_id,shop_cd,shop_name,display_num)values(b_shops_seq.nextval,1,'14','桂店',5);
+insert into b_shops (shop_id,dealer_id,shop_cd,shop_name,display_num)values(b_shops_seq.nextval,1,'15','山科店',6);
+insert into b_shops (shop_id,dealer_id,shop_cd,shop_name,display_num)values(b_shops_seq.nextval,1,'16','伏見店',7);
+insert into b_shops (shop_id,dealer_id,shop_cd,shop_name,display_num)values(b_shops_seq.nextval,1,'17','桃山店',8);
+insert into b_shops (shop_id,dealer_id,shop_cd,shop_name,display_num)values(b_shops_seq.nextval,1,'18','U-mix',9);
+insert into b_shops (shop_id,dealer_id,shop_cd,shop_name,display_num)values(b_shops_seq.nextval,1,'19','Custom Garage',10);
+insert into b_shops (shop_id,dealer_id,shop_cd,shop_name,display_num)values(b_shops_seq.nextval,1,'20','亀岡店',11);
+insert into b_shops (shop_id,dealer_id,shop_cd,shop_name,display_num)values(b_shops_seq.nextval,1,'21','舞鶴店',12);
+insert into b_shops (shop_id,dealer_id,shop_cd,shop_name,display_num)values(b_shops_seq.nextval,1,'22','峰山店',13);
+insert into b_shops (shop_id,dealer_id,shop_cd,shop_name,display_num)values(b_shops_seq.nextval,1,'23','福知山店',14);
+insert into b_shops (shop_id,dealer_id,shop_cd,shop_name,display_num)values(b_shops_seq.nextval,1,'24','マイカーガーデン',15);
+insert into b_shops (shop_id,dealer_id,shop_cd,shop_name,display_num)values(b_shops_seq.nextval,1,'25','乙訓店',16);
+insert into b_shops (shop_id,dealer_id,shop_cd,shop_name,display_num)values(b_shops_seq.nextval,1,'26','城陽店',17);
+insert into b_shops (shop_id,dealer_id,shop_cd,shop_name,display_num)values(b_shops_seq.nextval,1,'27','久御山店',18);
+insert into b_shops (shop_id,dealer_id,shop_cd,shop_name,display_num)values(b_shops_seq.nextval,1,'28','木津川台店',19);
+insert into b_shops (shop_id,dealer_id,shop_cd,shop_name,display_num)values(b_shops_seq.nextval,1,'29','レクサス西大路',20);
 
 insert into b_shops (shop_id,dealer_id,shop_cd,shop_name,display_num)values(b_shops_seq.nextval,2,33,'高野店', 1);
 insert into b_shops (shop_id,dealer_id,shop_cd,shop_name,display_num)values(b_shops_seq.nextval,2,34,'カドノ店', 2);
