@@ -7,8 +7,8 @@ CREATE TABLE b_stocks (
   color_cd                      VARCHAR2(20)  NOT NULL, -- 色(マスター無し)
   grade                         VARCHAR2(100) NOT NULL, -- グレード
   option_list                   VARCHAR2(200) , -- 複数のオプションをカンマ区切りで入力
-  production_date               DATE NOT NULL,  -- 生産日
-  registration_expiry_date      DATE NOT NULL,  -- 完切日：完成検査修了証の有効期限が切れる日？
+  production_date               VARCHAR2(10) NOT NULL,  -- 生産日(YYYY/MM/DD)
+  registration_expiry_date      VARCHAR2(10) NOT NULL,  -- 完切日(YYYY/MM/DD)：完成検査修了証の有効期限が切れる日？
   exhibit_flg                   VARCHAR2(1) DEFAULT 'N', -- 展示有無 展示:Y
   df_cd                         VARCHAR2(20) NOT NULL,  -- DF 例: 05971, C2414 など
   rank_cd                       VARCHAR2(20) NOT NULL,  -- ランク 例: A-1, A-2, D など
@@ -102,8 +102,8 @@ CREATE TABLE b_stocks_log (
   color_cd                      VARCHAR2(20)  NOT NULL, -- 色(マスター無し)
   grade                         VARCHAR2(100) NOT NULL, -- グレード
   option_list                   VARCHAR2(200) , -- 複数のオプションをカンマ区切りで入力
-  production_date               DATE NOT NULL,  -- 生産日
-  registration_expiry_date      DATE NOT NULL,  -- 完切日：完成検査修了証の有効期限が切れる日？
+  production_date               VARCHAR2(10) NOT NULL,  -- 生産日(YYYY/MM/DD)
+  registration_expiry_date      VARCHAR2(10) NOT NULL,  -- 完切日(YYYY/MM/DD)：完成検査修了証の有効期限が切れる日？
   exhibit_flg                   VARCHAR2(1) DEFAULT 'N', -- 展示有無 展示:Y
   df_cd                         VARCHAR2(20) NOT NULL,  -- DF 例: 05971, C2414 など
   rank_cd                       VARCHAR2(20) NOT NULL,  -- ランク 例: A-1, A-2, D など
@@ -162,5 +162,28 @@ CREATE TABLE b_shops_temp (
   dealer_name                   VARCHAR2(200) NOT NULL,
   shop_cd                       VARCHAR2(3) NOT NULL,
   shop_name                     VARCHAR2(200) NOT NULL,
+  message                       VARCHAR2(1000)
+);
+
+CREATE TABLE b_stocks_temp (
+  car_name                      VARCHAR2(200),
+  dealer_type                   VARCHAR2(2),   -- dealer_type + manage_id で一意
+  manage_id                     NUMBER,        -- 
+  format_name                   VARCHAR2(200),
+  color_cd                      VARCHAR2(20),
+  grade                         VARCHAR2(100),
+  option_list                   VARCHAR2(200),
+  production_date               VARCHAR2(10),
+  registration_expiry_date      VARCHAR2(10),
+  exhibit_flg                   VARCHAR2(1),
+  df_cd                         VARCHAR2(20),
+  rank_cd                       VARCHAR2(20),
+  measures_comments             VARCHAR2(4000),
+  remarks                       VARCHAR2(4000)
+);
+
+CREATE TABLE b_cars_temp (
+  car_name                      VARCHAR2(200) NOT NULL,
+  compact_flg                   VARCHAR2(1) NOT NULL,
   message                       VARCHAR2(1000)
 );

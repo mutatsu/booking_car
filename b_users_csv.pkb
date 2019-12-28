@@ -6,6 +6,7 @@ AS
   PROCEDURE ins_dealers(user_id_in IN VARCHAR2);
   PROCEDURE ins_shops(user_id_in IN VARCHAR2);
   PROCEDURE ins_users(user_id_in IN VARCHAR2);
+  PROCEDURE delete_temp_data;
 END b_users_csv;
 /
 CREATE OR REPLACE PACKAGE BODY b_users_csv
@@ -100,9 +101,16 @@ AS
 
   PROCEDURE print_new_dealers_shops
   AS
+    cnt NUMBER;
   BEGIN
-    check_new_dealers;
-    check_new_shops;
+    SELECT COUNT(*) INTO cnt FROM b_dealers_temp;
+    IF cnt = 0 THEN
+      check_new_dealers;
+    END IF;
+    SELECT COUNT(*) INTO cnt FROM b_shops_temp;
+    IF cnt = 0 THEN
+      check_new_shops;
+    END IF;
 
     htp.htmlopen;
     htp.headopen;
@@ -225,7 +233,7 @@ AS
       cnt := cnt + 1;
     END LOOP;
     IF cnt > 0 THEN
-      RAISE_APPLICATION_ERROR(-20060,'dealer_cd,shop_cd is not only one in b_shops.');
+      RAISE_APPLICATION_ERROR(-20061,'dealer_cd,shop_cd is not only one in b_shops.');
     END IF;
   EXCEPTION
     WHEN OTHERS THEN
@@ -293,13 +301,17 @@ AS
           FROM b_users
          WHERE user_id = i.user_id;
         BEGIN
-        -- 削除済のものは、再度利用可能とする
-          UPDATE b_users 
-             SET delete_flg = 'N',
-                 shop_id = i.shop_id,
-                 updated = CURRENT_DATE,
-                 updated_by = user_id_in
-           WHERE user_id = i.user_id;
+          IF dflg = 'N' AND s_id = i.shop_id THEN
+            NULL; -- 既に情報が存在するので何もしない
+          ELSE
+            -- 削除済のものは、再度利用可能とする
+            UPDATE b_users 
+               SET delete_flg = 'N',
+                   shop_id = i.shop_id,
+                   updated = CURRENT_DATE,
+                   updated_by = user_id_in
+             WHERE user_id = i.user_id;
+          END IF;
         EXCEPTION
           WHEN OTHERS THEN
             RAISE;
@@ -332,5 +344,15 @@ AS
       RAISE;
   END ins_users;
 
+  PROCEDURE delete_temp_data
+  AS
+  BEGIN
+    DELETE FROM b_dealers_temp;
+    DELETE FROM b_shops_temp;
+    DELETE FROM b_users_temp;
+  EXCEPTION
+    WHEN OTHERS THEN
+      RAISE;
+  END delete_temp_data;
 END b_users_csv;
 /
