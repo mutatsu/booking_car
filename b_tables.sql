@@ -153,12 +153,14 @@ CREATE TABLE b_users_temp (
 
 CREATE TABLE b_dealers_temp (
   dealer_cd                     VARCHAR2(2) NOT NULL,
-  dealer_name                   VARCHAR2(200) NOT NULL
+  dealer_name                   VARCHAR2(200) NOT NULL,
+  message                       VARCHAR2(1000)
 );
 
 CREATE TABLE b_shops_temp (
   dealer_cd                     VARCHAR2(2) NOT NULL,
   dealer_name                   VARCHAR2(200) NOT NULL,
   shop_cd                       VARCHAR2(3) NOT NULL,
-  shop_name                     VARCHAR2(200) NOT NULL
+  shop_name                     VARCHAR2(200) NOT NULL,
+  message                       VARCHAR2(1000)
 );
