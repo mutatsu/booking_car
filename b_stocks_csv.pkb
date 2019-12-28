@@ -228,18 +228,9 @@ AS
             NULL; -- 内容が同じなので更新対象外
           ELSE -- IF cnt = 0 の ELSE
             BEGIN
-              -- 追加で設定するカラム
-              rec.in_preparation_flg   := 'N';
-              rec.delete_flg           := 'N';
-              rec.created              := CURRENT_DATE;
-              rec.created_by           := user_id_in;
+              -- 追加で設定するカラム(必要なものだけ)
               rec.updated              := CURRENT_DATE;
               rec.updated_by           := user_id_in;
-              rec.reservation_date     := NULL;
-              rec.reservation_deadline := NULL;
-              rec.shop_id              := NULL;
-              rec.user_id              := NULL;
-              rec.close_flg            := 'N';
               UPDATE b_stocks
                  SET ROW = rec
                WHERE stock_id = rec.stock_id;
