@@ -1,7 +1,7 @@
 CREATE OR REPLACE PACKAGE b_stocks_csv
 AS
   PROCEDURE check_new_cars;
-  PROCEDURE print_new_cars;
+  PROCEDURE print_new_cars_stocks;
   PROCEDURE ins_cars(user_id_in IN VARCHAR2);
   PROCEDURE ins_stocks(user_id_in IN VARCHAR2);
   PROCEDURE delete_temp_data;
@@ -32,7 +32,7 @@ AS
       RAISE;
   END check_new_cars;
 
-  PROCEDURE print_new_cars
+  PROCEDURE print_new_cars_stocks
   AS
     cnt NUMBER;
   BEGIN
@@ -46,7 +46,7 @@ AS
     htp.headclose;
     htp.bodyopen;
 
-    htp.header(2,'新しい車種確認');
+    htp.header(2,'新しい車種および在庫No.重複確認');
     htp.header(3,'車種');
 
     FOR i in (
@@ -61,12 +61,29 @@ AS
       htp.br;
     END LOOP;
 
+    htp.header(3,'在庫No.重複確認');
+
+    FOR i in (
+      SELECT car_name, dealer_type, manage_id,COUNT(*) cnt
+        FROM b_stocks_temp
+       GROUP BY car_name, dealer_type, manage_id
+      HAVING COUNT(*) > 1
+    )LOOP
+      htp.print(
+        '車種: '|| i.car_name ||
+        ' タイプ: '|| i.dealer_type ||
+        ' 在庫No.: '|| i.manage_id ||
+        ' 重複数: '||cnt
+      );
+      htp.br;
+    END LOOP;
+
     htp.bodyclose;
     htp.htmlclose;
   EXCEPTION
     WHEN OTHERS THEN
       RAISE;
-  END print_new_cars;
+  END print_new_cars_stocks;
 
   PROCEDURE ins_cars(user_id_in IN VARCHAR2)
   AS
@@ -99,14 +116,23 @@ AS
     cnt NUMBER;
     len NUMBER;
     dt DATE;
+    opt_arr apex_application_global.vc_arr2;
   BEGIN
+    FOR i in (
+      SELECT car_name, dealer_type, manage_id,COUNT(*) cnt
+        FROM b_stocks_temp
+       GROUP BY car_name, dealer_type, manage_id
+      HAVING COUNT(*) > 1
+    )LOOP
+      RAISE_APPLICATION_ERROR(-20064,'car_name + dealer_type + manage_id is duplicated');
+    END LOOP;
     FOR i in (
       SELECT c.car_id,
              -- st.car_name,
              st.dealer_type,
              st.manage_id,
              st.format_name,
-             st.color_cd,
+             DECODE(LENGTHB(st.color_cd),1,'00',2,'0',NULL)||st.color_cd color_cd, -- CSV の先頭0欠落の対処
              st.grade,
              st.option_list,
              st.production_date,
@@ -120,7 +146,7 @@ AS
        WHERE st.car_name = c.car_name
          AND c.delete_flg = 'N'
     )LOOP
-      -- dealer_type + manage_id 単位で b_stocks を検索
+      -- car_id + dealer_type + manage_id 単位で b_stocks を検索
       -- データが存在するとUPDATE対象。(close_flg = 'Y'のものは更新しない)
       -- データが存在しないとINSERT対象。
       BEGIN
@@ -153,7 +179,9 @@ AS
           INTO rec
           FROM b_stocks
          WHERE dealer_type = i.dealer_type
-           AND manage_id = i.manage_id;
+           AND manage_id = i.manage_id
+           AND car_id = i.car_id
+        ;
 
         IF rec.close_flg = 'Y' THEN
           NULL; -- 既に成約しているので更新対象外
@@ -173,6 +201,20 @@ AS
             cnt := cnt + 1;
             rec.grade := i.grade;
           END IF;
+          -- オプションは 3 byte 文字列をカンマで区切ったもの。
+          -- 例: '41F,47B,53D'
+          -- 先頭の0文字列が抜けているかどうかを確認
+          opt_arr := apex_string.string_to_table(i.option_list,',');
+          FOR i in 1..opt_arr.LAST
+          LOOP
+            len := LENGTHB(opt_arr(i));
+            CASE len 
+              WHEN 1 THEN opt_arr(i) := '00'||opt_arr(i);
+              WHEN 2 THEN opt_arr(i) := '0'||opt_arr(i);
+              ELSE NULL; -- 何もしない
+            END CASE;
+          END LOOP;
+          i.option_list := apex_string.table_to_string(opt_arr,',');
           IF rec.option_list != i.option_list THEN
             cnt := cnt + 1;
             rec.option_list := i.option_list;

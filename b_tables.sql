@@ -167,7 +167,7 @@ CREATE TABLE b_shops_temp (
 
 CREATE TABLE b_stocks_temp (
   car_name                      VARCHAR2(200),
-  dealer_type                   VARCHAR2(2),   -- dealer_type + manage_id で一意
+  dealer_type                   VARCHAR2(2),   -- car_name + dealer_type + manage_id で一意
   manage_id                     NUMBER,        -- 
   format_name                   VARCHAR2(200),
   color_cd                      VARCHAR2(20),
