@@ -187,3 +187,61 @@ CREATE TABLE b_cars_temp (
   compact_flg                   VARCHAR2(1) NOT NULL,
   message                       VARCHAR2(1000)
 );
+
+CREATE OR REPLACE VIEW b_users_temp_v
+(
+"系列",
+"系列コード",
+"店",
+"店コード",
+"ユーザーID",
+"ユーザー名",
+"Email Address",
+"追加/削除"
+)AS
+SELECT
+dealer_name,
+dealer_cd,
+shop_name,
+shop_cd,
+user_id,
+user_name,
+email_address,
+update_flg
+FROM b_users_temp
+;
+
+CREATE OR REPLACE VIEW b_stocks_temp_v
+(
+"車名",
+"取扱タイプ",
+"在庫No.",
+"型式",
+"カラー",
+"グレード",
+"オプション",
+"生産日",
+"完切日",
+"展示",
+"DF",
+"ランク",
+"対策費",
+"状況"
+)AS
+SELECT
+car_name,
+dealer_type,
+manage_id,
+format_name,
+color_cd,
+grade,
+option_list,
+production_date,
+registration_expiry_date,
+exhibit_flg,
+df_cd,
+rank_cd,
+measures_comments,
+remarks
+FROM b_stocks_temp
+;
