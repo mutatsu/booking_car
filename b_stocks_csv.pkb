@@ -61,7 +61,7 @@ AS
       htp.br;
     END LOOP;
 
-    htp.header(3,'在庫No.重複確認');
+    htp.header(3,'在庫番号重複確認');
 
     FOR i in (
       SELECT car_name, dealer_type, manage_id,COUNT(*) cnt
@@ -72,7 +72,7 @@ AS
       htp.print(
         '車種: '|| i.car_name ||
         ' タイプ: '|| i.dealer_type ||
-        ' 在庫No.: '|| i.manage_id ||
+        ' 在庫番号: '|| i.manage_id ||
         ' 重複数: '||cnt
       );
       htp.br;
@@ -197,6 +197,8 @@ AS
             cnt := cnt + 1;
             rec.color_cd := i.color_cd;
           END IF;
+          -- 半角カタカナを全角カタカナに変換
+          i.grade := UTL_I18N.TRANSLITERATE(i.grade,'hwkatakana_fwkatakana');
           IF rec.grade != i.grade THEN
             cnt := cnt + 1;
             rec.grade := i.grade;

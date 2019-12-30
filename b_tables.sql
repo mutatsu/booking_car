@@ -196,7 +196,7 @@ CREATE OR REPLACE VIEW b_users_temp_v
 "店コード",
 "ユーザーID",
 "ユーザー名",
-"Email Address",
+"メールアドレス",
 "追加/削除"
 )AS
 SELECT
@@ -215,7 +215,7 @@ CREATE OR REPLACE VIEW b_stocks_temp_v
 (
 "車名",
 "取扱タイプ",
-"在庫No.",
+"在庫番号",
 "型式",
 "カラー",
 "グレード",
