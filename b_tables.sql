@@ -9,7 +9,7 @@ CREATE TABLE b_stocks (
   option_list                   VARCHAR2(200) , -- 複数のオプションをカンマ区切りで入力
   production_date               VARCHAR2(10) NOT NULL,  -- 生産日(YYYY/MM/DD)
   registration_expiry_date      VARCHAR2(10) NOT NULL,  -- 完切日(YYYY/MM/DD)：完成検査修了証の有効期限が切れる日？
-  exhibit_flg                   VARCHAR2(1) DEFAULT 'N', -- 展示有無 展示:Y
+  exhibit_flg                   VARCHAR2(1) , -- 展示有無 展示:Y
   df_cd                         VARCHAR2(20) NOT NULL,  -- DF 例: 05971, C2414 など
   rank_cd                       VARCHAR2(20) NOT NULL,  -- ランク 例: A-1, A-2, D など
   measures_comments             VARCHAR2(4000), -- 対策費
@@ -76,6 +76,19 @@ CREATE TABLE b_dealers (
 );
 create sequence b_dealers_seq start with 1 increment by 1 nocache order;
 
+CREATE TABLE b_dealer_types (
+  dealer_type_id                NUMBER NOT NULL,
+  dealer_cd                     VARCHAR2(2) NOT NULL,
+  dealer_type                   VARCHAR2(3) NOT NULL,
+  delete_flg                    VARCHAR2(1) DEFAULT 'N',
+  created                       DATE DEFAULT CURRENT_DATE,
+  created_by                    VARCHAR2(100) DEFAULT 'admin',
+  updated                       DATE DEFAULT CURRENT_DATE,
+  updated_by                    VARCHAR2(100) DEFAULT 'admin',
+  CONSTRAINT b_dealer_types_pk PRIMARY KEY (dealer_type_id) ENABLE
+);
+create sequence b_dealer_types_seq start with 1 increment by 1 nocache order;
+
 CREATE TABLE b_shops (
   shop_id                       NUMBER NOT NULL,
   shop_cd                       VARCHAR2(3) NOT NULL,
@@ -104,17 +117,17 @@ CREATE TABLE b_stocks_log (
   option_list                   VARCHAR2(200) , -- 複数のオプションをカンマ区切りで入力
   production_date               VARCHAR2(10) NOT NULL,  -- 生産日(YYYY/MM/DD)
   registration_expiry_date      VARCHAR2(10) NOT NULL,  -- 完切日(YYYY/MM/DD)：完成検査修了証の有効期限が切れる日？
-  exhibit_flg                   VARCHAR2(1) DEFAULT 'N', -- 展示有無 展示:Y
+  exhibit_flg                   VARCHAR2(1) , -- 展示有無 展示:Y
   df_cd                         VARCHAR2(20) NOT NULL,  -- DF 例: 05971, C2414 など
   rank_cd                       VARCHAR2(20) NOT NULL,  -- ランク 例: A-1, A-2, D など
   measures_comments             VARCHAR2(4000), -- 対策費
   remarks                       VARCHAR2(4000), -- 備考
-  in_preparation_flg            VARCHAR2(1) DEFAULT 'N', -- Y: 準備中（一時的に予約可能物件として表示できなくする）
+  in_preparation_flg            VARCHAR2(1), -- Y: 準備中（一時的に予約可能物件として表示できなくする）
   reservation_date              DATE,
   reservation_deadline          DATE,
   shop_id                       NUMBER,
   user_id                       VARCHAR2(8),
-  close_flg                     VARCHAR2(1) DEFAULT 'N',
+  close_flg                     VARCHAR2(1),
   event_id                      VARCHAR2(1), -- Timeout:0、予約:1、予約キャンセル:2、成約:3、成約取消:4
   event_date                    DATE,
   CONSTRAINT b_stocks_log_pk PRIMARY KEY (log_id) ENABLE

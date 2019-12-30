@@ -35,6 +35,7 @@ AS
   PROCEDURE print_new_cars_stocks
   AS
     cnt NUMBER;
+    dt DATE;
   BEGIN
     SELECT COUNT(*) INTO cnt FROM b_cars_temp;
     IF cnt = 0 THEN
@@ -76,6 +77,85 @@ AS
         ' 重複数: '||cnt
       );
       htp.br;
+    END LOOP;
+
+    htp.header(3,'その他日付・フラグ確認');
+    -- 取扱タイプ
+    cnt := 0;
+    FOR i in (
+      SELECT dealer_type from b_stocks_temp
+       MINUS
+      SELECT DISTINCT dealer_type 
+        FROM b_dealer_types
+       WHERE delete_flg = 'N'
+    )LOOP
+      cnt := cnt + 1;
+    END LOOP;
+    IF cnt != 0 THEN
+      FOR i in (
+        SELECT LISTAGG(dealer_type,',') all_types
+          FROM (
+        SELECT DISTINCT dealer_type
+          FROM b_dealer_types
+         WHERE delete_flg = 'N'
+        )
+      )LOOP
+        htp.print(
+          '取扱タイプは '|| i.all_types ||' のみをセットしてください'
+        );
+        htp.br;
+      END LOOP;
+    END IF;
+    -- 展示フラグ
+    SELECT COUNT(*) into cnt
+      FROM b_stocks_temp
+     WHERE exhibit_flg != 'Y';
+    IF cnt != 0 THEN
+      htp.print(
+        '展示フラグは Y のみをセットしてください'
+      );
+      htp.br;
+    END IF;
+    FOR i in (
+      SELECT production_date,registration_expiry_date
+        FROM b_stocks_temp
+    )LOOP
+      BEGIN
+        -- i.production_date 日付チェック
+        IF LENGTHB(i.production_date) != 10 THEN
+          RAISE_APPLICATION_ERROR(-20062,'pruduction_date is not valid date.');
+        END IF;
+        BEGIN
+          dt := TO_DATE(i.production_date,'YYYY/MM/DD');
+        EXCEPTION
+          WHEN OTHERS THEN
+            RAISE;
+        END;
+      EXCEPTION
+        WHEN OTHERS THEN
+          htp.print(
+            '生産日を確認してください '||i.production_date
+          );
+          htp.br;
+      END;
+      BEGIN
+        -- i.registration_expiry_date 日付チェック
+        IF LENGTHB(i.registration_expiry_date) != 10 THEN
+          RAISE_APPLICATION_ERROR(-20063,'registration_expiry_date is not valid date.');
+        END IF;
+        BEGIN
+          dt := TO_DATE(i.registration_expiry_date,'YYYY/MM/DD');
+        EXCEPTION
+          WHEN OTHERS THEN
+            RAISE;
+        END;
+      EXCEPTION
+        WHEN OTHERS THEN
+          htp.print(
+            '完切日を確認してください '||i.registration_expiry_date
+          );
+          htp.br;
+      END;
     END LOOP;
 
     htp.bodyclose;
@@ -287,13 +367,47 @@ AS
       EXCEPTION
         WHEN NO_DATA_FOUND THEN
           BEGIN
+            -- i.option_list の調整
+            opt_arr := apex_string.string_to_table(i.option_list,',');
+            FOR i in 1..opt_arr.LAST
+            LOOP
+              len := LENGTHB(opt_arr(i));
+              CASE len 
+                WHEN 1 THEN opt_arr(i) := '00'||opt_arr(i);
+                WHEN 2 THEN opt_arr(i) := '0'||opt_arr(i);
+                ELSE NULL; -- 何もしない
+              END CASE;
+            END LOOP;
+            i.option_list := apex_string.table_to_string(opt_arr,',');
+
+            -- i.production_date 日付チェック
+            IF LENGTHB(i.production_date) != 10 THEN
+              RAISE_APPLICATION_ERROR(-20062,'pruduction_date is not valid date.');
+            END IF;
+            BEGIN
+              dt := TO_DATE(i.production_date,'YYYY/MM/DD');
+            EXCEPTION
+              WHEN OTHERS THEN
+                RAISE;
+            END;
+            -- i.registration_expiry_date 日付チェック
+            IF LENGTHB(i.registration_expiry_date) != 10 THEN
+              RAISE_APPLICATION_ERROR(-20063,'registration_expiry_date is not valid date.');
+            END IF;
+            BEGIN
+              dt := TO_DATE(i.registration_expiry_date,'YYYY/MM/DD');
+            EXCEPTION
+              WHEN OTHERS THEN
+                RAISE;
+            END;
+
             rec.stock_id                 := b_stocks_seq.nextval;
             rec.car_id                   := i.car_id;
             rec.dealer_type              := i.dealer_type;
             rec.manage_id                := i.manage_id;
             rec.format_name              := i.format_name;
             rec.color_cd                 := i.color_cd;
-            rec.grade                    := i.grade;
+            rec.grade                    := UTL_I18N.TRANSLITERATE(i.grade,'hwkatakana_fwkatakana');
             rec.option_list              := i.option_list;
             rec.production_date          := i.production_date;
             rec.registration_expiry_date := i.registration_expiry_date;

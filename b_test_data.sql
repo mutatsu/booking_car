@@ -2,6 +2,12 @@
 insert into b_dealers (dealer_id, dealer_cd, dealer_name, display_num) values(b_dealers_seq.nextval,'P','京都トヨペット',1);
 insert into b_dealers (dealer_id, dealer_cd, dealer_name, display_num) values(b_dealers_seq.nextval,'N','ネッツトヨタ京華',2);
 
+-- b_dealer_types
+insert into b_dealer_types (dealer_type_id, dealer_cd, dealer_type) values(b_dealer_types_seq.nextval,'P','P');
+insert into b_dealer_types (dealer_type_id, dealer_cd, dealer_type) values(b_dealer_types_seq.nextval,'P','NP');
+insert into b_dealer_types (dealer_type_id, dealer_cd, dealer_type) values(b_dealer_types_seq.nextval,'N','N');
+insert into b_dealer_types (dealer_type_id, dealer_cd, dealer_type) values(b_dealer_types_seq.nextval,'N','NP');
+
 -- b_shops
 insert into b_shops (shop_id,dealer_id,shop_cd,shop_name,display_num)values(b_shops_seq.nextval,1,'01','P本部',99);
 insert into b_shops (shop_id,dealer_id,shop_cd,shop_name,display_num)values(b_shops_seq.nextval,2,'02','N本部',99);
