@@ -22,6 +22,7 @@ CREATE TABLE b_stocks (
   updated_by                    VARCHAR2(100) DEFAULT 'admin',
   reservation_date              DATE,
   reservation_deadline          DATE,
+  close_date                    DATE,
   shop_id                       NUMBER,
   user_id                       VARCHAR2(8),
   close_flg                     VARCHAR2(1) DEFAULT 'N',
@@ -52,6 +53,7 @@ CREATE TABLE b_users (
   password                      VARCHAR2(255) NOT NULL,
   password_life_time            NUMBER NOT NULL, -- 単位: 日
   change_password               VARCHAR2(1) DEFAULT 'Y',
+  shop_admin_flg                VARCHAR2(1) DEFAULT 'N',
   admin_flg                     VARCHAR2(1) DEFAULT 'N',
   delete_flg                    VARCHAR2(1) DEFAULT 'N',
   created                       DATE DEFAULT CURRENT_DATE,
@@ -85,7 +87,8 @@ CREATE TABLE b_dealer_types (
   created_by                    VARCHAR2(100) DEFAULT 'admin',
   updated                       DATE DEFAULT CURRENT_DATE,
   updated_by                    VARCHAR2(100) DEFAULT 'admin',
-  CONSTRAINT b_dealer_types_pk PRIMARY KEY (dealer_type_id) ENABLE
+  CONSTRAINT b_dealer_types_pk PRIMARY KEY (dealer_type_id) ENABLE,
+  CONSTRAINT b_dealer_types_fk FOREIGN KEY (dealer_cd) REFERENCES b_dealers (dealer_cd) ENABLE
 );
 create sequence b_dealer_types_seq start with 1 increment by 1 nocache order;
 
@@ -125,6 +128,7 @@ CREATE TABLE b_stocks_log (
   in_preparation_flg            VARCHAR2(1), -- Y: 準備中（一時的に予約可能物件として表示できなくする）
   reservation_date              DATE,
   reservation_deadline          DATE,
+  close_date                    DATE,
   shop_id                       NUMBER,
   user_id                       VARCHAR2(8),
   close_flg                     VARCHAR2(1),

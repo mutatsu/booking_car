@@ -38,7 +38,7 @@ AS
             '新規登録の可能性があります。';
         ELSE
           msgs :=
-            '入力間違いの可能性があります。(コードが異なるが、同じ名称の系列が存在します)';
+            '入力間違いの可能性があります。(系列コードが異なるが、同じ名称の系列が存在します)';
         END IF;
         rec.dealer_cd := j.dealer_cd;
         rec.dealer_name := j.dealer_name;
@@ -84,7 +84,7 @@ AS
             '新規登録の可能性があります。';
         ELSE
           msgs := 
-            '入力間違いの可能性があります。(コードが異なるが、同じ名称の店舗が存在します)';
+            '入力間違いの可能性があります。(店コードが異なるが、同じ名称の店舗が存在します)';
         END IF;
         rec.dealer_cd := j.dealer_cd;
         rec.dealer_name := j.dealer_name;

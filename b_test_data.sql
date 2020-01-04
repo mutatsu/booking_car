@@ -127,3 +127,9 @@ insert into b_codes (id, tag, name, vc,display_num,memo)values(b_codes_seq.nextv
 insert into b_codes (id, tag, name, vc,display_num,memo)values(b_codes_seq.nextval,'CARS$COMPACT_FLG','軽','Y',2,'軽自動車フラグ');
 insert into b_codes (id, tag, name, vc,display_num,memo)values(b_codes_seq.nextval,'STOCKS$IN_PREPARATION_FLG',' ','N',1,'準備中フラグ');
 insert into b_codes (id, tag, name, vc,display_num,memo)values(b_codes_seq.nextval,'STOCKS$IN_PREPARATION_FLG','準備中','Y',2,'準備中フラグ');
+insert into b_codes (id, tag, name, vn,display_num,memo)values(b_codes_seq.nextval,'STOCKS_LOG$EVENT_ID','TIMEOUT',0,0,'準備中フラグ');
+insert into b_codes (id, tag, name, vn,display_num,memo)values(b_codes_seq.nextval,'STOCKS_LOG$EVENT_ID','予約',1,1,'準備中フラグ');
+insert into b_codes (id, tag, name, vn,display_num,memo)values(b_codes_seq.nextval,'STOCKS_LOG$EVENT_ID','予約取消',2,2,'準備中フラグ');
+insert into b_codes (id, tag, name, vn,display_num,memo)values(b_codes_seq.nextval,'STOCKS_LOG$EVENT_ID','受注',3,3,'準備中フラグ');
+insert into b_codes (id, tag, name, vn,display_num,memo)values(b_codes_seq.nextval,'STOCKS_LOG$EVENT_ID','受注取消',4,4,'準備中フラグ');
+insert into b_codes (id, tag, name, vn,display_num,memo)values(b_codes_seq.nextval,'STOCKS_LOG$EVENT_ID','予約延長',5,5,'準備中フラグ');
