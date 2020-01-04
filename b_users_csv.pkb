@@ -328,6 +328,7 @@ AS
             );
           rec.password_life_time := 180;
           rec.change_password    := 'Y';
+          rec.shop_admin_flg     := 'N';
           rec.admin_flg          := 'N';
           rec.delete_flg         := 'N';
           rec.created            := CURRENT_DATE;

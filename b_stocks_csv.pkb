@@ -15,7 +15,8 @@ AS
   BEGIN
     FOR i in (
       -- 半角カタカナのみを全角カタカナ変換して比較
-      SELECT DISTINCT UTL_I18N.TRANSLITERATE(car_name,'hwkatakana_fwkatakana') car_name
+      -- 半角スペースが全角スペースになってしまうので、半角スペースに戻す
+      SELECT DISTINCT REPLACE(UTL_I18N.TRANSLITERATE(car_name,'hwkatakana_fwkatakana'),'　',' ') car_name
         FROM b_stocks_temp
        MINUS 
       SELECT car_name
@@ -56,8 +57,8 @@ AS
     )LOOP
       htp.print(
         '名称: '|| i.car_name ||
-        ' 軽自動車かどうか: '|| i.compact_flg ||
-        i.message
+        -- ' 軽自動車かどうか: '|| i.compact_flg ||
+        ' '||i.message
       );
       htp.br;
     END LOOP;
@@ -74,7 +75,7 @@ AS
         '車種: '|| i.car_name ||
         ' タイプ: '|| i.dealer_type ||
         ' 在庫番号: '|| i.manage_id ||
-        ' 重複数: '||cnt
+        ' 重複数: '||i.cnt
       );
       htp.br;
     END LOOP;
@@ -122,9 +123,6 @@ AS
     )LOOP
       BEGIN
         -- i.production_date 日付チェック
-        IF LENGTHB(i.production_date) != 10 THEN
-          RAISE_APPLICATION_ERROR(-20062,'pruduction_date is not valid date.');
-        END IF;
         BEGIN
           dt := TO_DATE(i.production_date,'YYYY/MM/DD');
         EXCEPTION
@@ -140,9 +138,6 @@ AS
       END;
       BEGIN
         -- i.registration_expiry_date 日付チェック
-        IF LENGTHB(i.registration_expiry_date) != 10 THEN
-          RAISE_APPLICATION_ERROR(-20063,'registration_expiry_date is not valid date.');
-        END IF;
         BEGIN
           dt := TO_DATE(i.registration_expiry_date,'YYYY/MM/DD');
         EXCEPTION
@@ -253,6 +248,7 @@ AS
                updated_by,
                reservation_date,
                reservation_deadline,
+               close_date,
                shop_id,
                user_id,
                close_flg
@@ -278,7 +274,8 @@ AS
             rec.color_cd := i.color_cd;
           END IF;
           -- 半角カタカナを全角カタカナに変換
-          i.grade := UTL_I18N.TRANSLITERATE(i.grade,'hwkatakana_fwkatakana');
+          -- 半角スペースが全角スペースになってしまうので、半角スペースに戻す
+          i.grade := REPLACE(UTL_I18N.TRANSLITERATE(i.grade,'hwkatakana_fwkatakana'),'　',' ');
           IF rec.grade != i.grade THEN
             cnt := cnt + 1;
             rec.grade := i.grade;
@@ -286,25 +283,24 @@ AS
           -- オプションは 3 byte 文字列をカンマで区切ったもの。
           -- 例: '41F,47B,53D'
           -- 先頭の0文字列が抜けているかどうかを確認
-          opt_arr := apex_string.string_to_table(i.option_list,',');
-          FOR i in 1..opt_arr.LAST
-          LOOP
-            len := LENGTHB(opt_arr(i));
-            CASE len 
-              WHEN 1 THEN opt_arr(i) := '00'||opt_arr(i);
-              WHEN 2 THEN opt_arr(i) := '0'||opt_arr(i);
-              ELSE NULL; -- 何もしない
-            END CASE;
-          END LOOP;
-          i.option_list := apex_string.table_to_string(opt_arr,',');
+          IF i.option_list IS NOT NULL THEN
+            opt_arr := apex_string.string_to_table(i.option_list,',');
+            FOR i in 1..opt_arr.LAST
+            LOOP
+              len := LENGTHB(opt_arr(i));
+              CASE len 
+                WHEN 1 THEN opt_arr(i) := '00'||opt_arr(i);
+                WHEN 2 THEN opt_arr(i) := '0'||opt_arr(i);
+                ELSE NULL; -- 何もしない
+              END CASE;
+            END LOOP;
+            i.option_list := apex_string.table_to_string(opt_arr,',');
+          END IF;
           IF rec.option_list != i.option_list THEN
             cnt := cnt + 1;
             rec.option_list := i.option_list;
           END IF;
           IF rec.production_date != i.production_date THEN
-            IF LENGTHB(i.production_date) != 10 THEN
-              RAISE_APPLICATION_ERROR(-20062,'pruduction_date is not valid date.');
-            END IF;
             BEGIN
               dt := TO_DATE(i.production_date,'YYYY/MM/DD');
             EXCEPTION
@@ -315,9 +311,6 @@ AS
             rec.production_date := i.production_date;
           END IF;
           IF rec.registration_expiry_date != i.registration_expiry_date THEN
-            IF LENGTHB(i.registration_expiry_date) != 10 THEN
-              RAISE_APPLICATION_ERROR(-20063,'registration_expiry_date is not valid date.');
-            END IF;
             BEGIN
               dt := TO_DATE(i.registration_expiry_date,'YYYY/MM/DD');
             EXCEPTION
@@ -368,22 +361,20 @@ AS
         WHEN NO_DATA_FOUND THEN
           BEGIN
             -- i.option_list の調整
-            opt_arr := apex_string.string_to_table(i.option_list,',');
-            FOR i in 1..opt_arr.LAST
-            LOOP
-              len := LENGTHB(opt_arr(i));
-              CASE len 
-                WHEN 1 THEN opt_arr(i) := '00'||opt_arr(i);
-                WHEN 2 THEN opt_arr(i) := '0'||opt_arr(i);
-                ELSE NULL; -- 何もしない
-              END CASE;
-            END LOOP;
-            i.option_list := apex_string.table_to_string(opt_arr,',');
-
-            -- i.production_date 日付チェック
-            IF LENGTHB(i.production_date) != 10 THEN
-              RAISE_APPLICATION_ERROR(-20062,'pruduction_date is not valid date.');
+            IF i.option_list IS NOT NULL THEN
+              opt_arr := apex_string.string_to_table(i.option_list,',');
+              FOR i in 1..opt_arr.LAST
+              LOOP
+                len := LENGTHB(opt_arr(i));
+                CASE len 
+                  WHEN 1 THEN opt_arr(i) := '00'||opt_arr(i);
+                  WHEN 2 THEN opt_arr(i) := '0'||opt_arr(i);
+                  ELSE NULL; -- 何もしない
+                END CASE;
+              END LOOP;
+              i.option_list := apex_string.table_to_string(opt_arr,',');
             END IF;
+            -- i.production_date 日付チェック
             BEGIN
               dt := TO_DATE(i.production_date,'YYYY/MM/DD');
             EXCEPTION
@@ -391,9 +382,6 @@ AS
                 RAISE;
             END;
             -- i.registration_expiry_date 日付チェック
-            IF LENGTHB(i.registration_expiry_date) != 10 THEN
-              RAISE_APPLICATION_ERROR(-20063,'registration_expiry_date is not valid date.');
-            END IF;
             BEGIN
               dt := TO_DATE(i.registration_expiry_date,'YYYY/MM/DD');
             EXCEPTION
@@ -407,7 +395,7 @@ AS
             rec.manage_id                := i.manage_id;
             rec.format_name              := i.format_name;
             rec.color_cd                 := i.color_cd;
-            rec.grade                    := UTL_I18N.TRANSLITERATE(i.grade,'hwkatakana_fwkatakana');
+            rec.grade                    := REPLACE(UTL_I18N.TRANSLITERATE(i.grade,'hwkatakana_fwkatakana'),'　',' ');
             rec.option_list              := i.option_list;
             rec.production_date          := i.production_date;
             rec.registration_expiry_date := i.registration_expiry_date;

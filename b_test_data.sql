@@ -103,7 +103,6 @@ insert into b_cars (car_id,car_name,compact_flg)values(b_cars_seq.nextval,'ヴ�
 insert into b_cars (car_id,car_name,compact_flg)values(b_cars_seq.nextval,'ヴォクシー GR SPORT','N');
 insert into b_cars (car_id,car_name,compact_flg)values(b_cars_seq.nextval,'コペン GR SPORT','N');
 insert into b_cars (car_id,car_name,compact_flg)values(b_cars_seq.nextval,'C-HR GR SPORT','N');
-insert into b_cars (car_id,car_name,compact_flg)values(b_cars_seq.nextval,'スープラ','N');
 insert into b_cars (car_id,car_name,compact_flg)values(b_cars_seq.nextval,'ノア GR SPORT','N');
 insert into b_cars (car_id,car_name,compact_flg)values(b_cars_seq.nextval,'86 GR','N');
 insert into b_cars (car_id,car_name,compact_flg)values(b_cars_seq.nextval,'86 GR SPORT','N');
@@ -115,6 +114,23 @@ insert into b_cars (car_id,car_name,compact_flg)values(b_cars_seq.nextval,'ピ�
 insert into b_cars (car_id,car_name,compact_flg)values(b_cars_seq.nextval,'ピクシス トラック','Y');
 insert into b_cars (car_id,car_name,compact_flg)values(b_cars_seq.nextval,'ピクシス バン','Y');
 insert into b_cars (car_id,car_name,compact_flg)values(b_cars_seq.nextval,'ピクシス メガ','Y');
+insert into b_cars (car_id,car_name,compact_flg)values(b_cars_seq.nextval,'アクア ウェルキャブ','N');
+insert into b_cars (car_id,car_name,compact_flg)values(b_cars_seq.nextval,'アルファード ウェルキャブ','N');
+insert into b_cars (car_id,car_name,compact_flg)values(b_cars_seq.nextval,'ヴェルファイア ウェルキャブ','N');
+insert into b_cars (car_id,car_name,compact_flg)values(b_cars_seq.nextval,'プリウス ウェルキャブ','N');
+insert into b_cars (car_id,car_name,compact_flg)values(b_cars_seq.nextval,'プリウスPHV ウェルキャブ','N');
+insert into b_cars (car_id,car_name,compact_flg)values(b_cars_seq.nextval,'プリウスα ウェルキャブ','N');
+insert into b_cars (car_id,car_name,compact_flg)values(b_cars_seq.nextval,'シエンタ ウェルキャブ','N');
+insert into b_cars (car_id,car_name,compact_flg)values(b_cars_seq.nextval,'ヤリス ウェルキャブ','N');
+insert into b_cars (car_id,car_name,compact_flg)values(b_cars_seq.nextval,'タンク ウェルキャブ','N');
+insert into b_cars (car_id,car_name,compact_flg)values(b_cars_seq.nextval,'ルーミー ウェルキャブ','N');
+insert into b_cars (car_id,car_name,compact_flg)values(b_cars_seq.nextval,'スペイド ウェルキャブ','N');
+insert into b_cars (car_id,car_name,compact_flg)values(b_cars_seq.nextval,'ポルテ ウェルキャブ','N');
+insert into b_cars (car_id,car_name,compact_flg)values(b_cars_seq.nextval,'ヴォクシー ウェルキャブ','N');
+insert into b_cars (car_id,car_name,compact_flg)values(b_cars_seq.nextval,'エスクァイア ウェルキャブ','N');
+insert into b_cars (car_id,car_name,compact_flg)values(b_cars_seq.nextval,'ノア ウェルキャブ','N');
+insert into b_cars (car_id,car_name,compact_flg)values(b_cars_seq.nextval,'アリオン ウェルキャブ','N');
+insert into b_cars (car_id,car_name,compact_flg)values(b_cars_seq.nextval,'プレミオ ウェルキャブ','N');
 
 -- b_codes
 insert into b_codes (id, tag, name, vc,display_num,memo)values(b_codes_seq.nextval,'DELETE_FLG',' ','N',1,'削除フラグ');

@@ -45,25 +45,6 @@ CREATE TABLE b_cars (
 );
 create sequence b_cars_seq start with 1 increment by 1 nocache order;
 
-CREATE TABLE b_users (
-  user_id                       VARCHAR2(8) NOT NULL, -- LOWER CASE
-  user_name                     VARCHAR2(100) NOT NULL,
-  shop_id                       NUMBER NOT NULL,
-  email_address                 VARCHAR2(100) NOT NULL, -- LOWER CASE
-  password                      VARCHAR2(255) NOT NULL,
-  password_life_time            NUMBER NOT NULL, -- 単位: 日
-  change_password               VARCHAR2(1) DEFAULT 'Y',
-  shop_admin_flg                VARCHAR2(1) DEFAULT 'N',
-  admin_flg                     VARCHAR2(1) DEFAULT 'N',
-  delete_flg                    VARCHAR2(1) DEFAULT 'N',
-  created                       DATE DEFAULT CURRENT_DATE,
-  created_by                    VARCHAR2(100) DEFAULT 'admin',
-  updated                       DATE DEFAULT CURRENT_DATE,
-  updated_by                    VARCHAR2(100) DEFAULT 'admin',
-  CONSTRAINT b_users_pk PRIMARY KEY (user_id) ENABLE,
-  CONSTRAINT b_users_fk FOREIGN KEY (shop_id) REFERENCES b_shops (shop_id) ENABLE
-);
-
 CREATE TABLE b_dealers (
   dealer_id                     NUMBER NOT NULL,
   dealer_cd                     VARCHAR2(2) NOT NULL,
@@ -74,7 +55,8 @@ CREATE TABLE b_dealers (
   created_by                    VARCHAR2(100) DEFAULT 'admin',
   updated                       DATE DEFAULT CURRENT_DATE,
   updated_by                    VARCHAR2(100) DEFAULT 'admin',
-  CONSTRAINT b_dealers_pk PRIMARY KEY (dealer_id) ENABLE
+  CONSTRAINT b_dealers_pk PRIMARY KEY (dealer_id) ENABLE,
+  CONSTRAINT b_dealers_uk UNIQUE (dealer_cd) ENABLE
 );
 create sequence b_dealers_seq start with 1 increment by 1 nocache order;
 
@@ -107,6 +89,25 @@ CREATE TABLE b_shops (
   CONSTRAINT b_shops_fk FOREIGN KEY (dealer_id) REFERENCES b_dealers (dealer_id) ENABLE
 );
 create sequence b_shops_seq start with 1 increment by 1 nocache order;
+
+CREATE TABLE b_users (
+  user_id                       VARCHAR2(8) NOT NULL, -- LOWER CASE
+  user_name                     VARCHAR2(100) NOT NULL,
+  shop_id                       NUMBER NOT NULL,
+  email_address                 VARCHAR2(100) NOT NULL, -- LOWER CASE
+  password                      VARCHAR2(255) NOT NULL,
+  password_life_time            NUMBER NOT NULL, -- 単位: 日
+  change_password               VARCHAR2(1) DEFAULT 'Y',
+  shop_admin_flg                VARCHAR2(1) DEFAULT 'N',
+  admin_flg                     VARCHAR2(1) DEFAULT 'N',
+  delete_flg                    VARCHAR2(1) DEFAULT 'N',
+  created                       DATE DEFAULT CURRENT_DATE,
+  created_by                    VARCHAR2(100) DEFAULT 'admin',
+  updated                       DATE DEFAULT CURRENT_DATE,
+  updated_by                    VARCHAR2(100) DEFAULT 'admin',
+  CONSTRAINT b_users_pk PRIMARY KEY (user_id) ENABLE,
+  CONSTRAINT b_users_fk FOREIGN KEY (shop_id) REFERENCES b_shops (shop_id) ENABLE
+);
 
 CREATE TABLE b_stocks_log (
   log_id                        NUMBER NOT NULL,
