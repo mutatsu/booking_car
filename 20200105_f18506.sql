@@ -28,7 +28,7 @@ prompt APPLICATION 18506 - 推販車予約管理
 -- Application Export:
 --   Application:     18506
 --   Name:            推販車予約管理
---   Date and Time:   22:01 土曜日 1月 4, 2020
+--   Date and Time:   10:11 日曜日 1月 5, 2020
 --   Exported By:     UTATU@U311.SAKURA.NE.JP
 --   Flashback:       0
 --   Export Type:     Application Export
@@ -116,7 +116,7 @@ wwv_flow_api.create_flow(
 ,p_substitution_string_01=>'APP_NAME'
 ,p_substitution_value_01=>unistr('\63A8\8CA9\8ECA\4E88\7D04\7BA1\7406')
 ,p_last_updated_by=>'UTATU@U311.SAKURA.NE.JP'
-,p_last_upd_yyyymmddhh24miss=>'20200104213806'
+,p_last_upd_yyyymmddhh24miss=>'20200105100624'
 ,p_file_prefix => nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>3
 ,p_ui_type_name => null
@@ -12449,7 +12449,7 @@ wwv_flow_api.create_page(
 ,p_required_role=>wwv_flow_api.id(32907158737969600934)
 ,p_protection_level=>'C'
 ,p_last_updated_by=>'UTATU@U311.SAKURA.NE.JP'
-,p_last_upd_yyyymmddhh24miss=>'20200104183207'
+,p_last_upd_yyyymmddhh24miss=>'20200105100624'
 );
 wwv_flow_api.create_page_plug(
  p_id=>wwv_flow_api.id(48865671936930018538)
@@ -12506,11 +12506,11 @@ wwv_flow_api.create_page_item(
 'DECLARE',
 'BEGIN',
 ' FOR i in (',
-'  SELECT shop_id,shop_admin_flg ',
+'  SELECT shop_id,admin_flg ',
 '    FROM b_users',
 '   WHERE user_id = LOWER(:APP_USER)',
 ' )LOOP',
-'  IF i.shop_admin_flg = ''Y'' THEN',
+'  IF i.admin_flg = ''Y'' THEN',
 '    RETURN NULL;',
 '  ELSE',
 '    RETURN i.shop_id;',
